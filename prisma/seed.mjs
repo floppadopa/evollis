@@ -11,8 +11,9 @@ const DAY = 24 * HOUR;
 const now = Date.now();
 const rand = (a, b) => Math.floor(a + Math.random() * (b - a));
 const avatar = (seed) => `https://i.pravatar.cc/150?u=${encodeURIComponent(seed)}`;
-// Placeholder attachment image (the real app stores base64 data URLs).
-const shot = (client, n) => `https://picsum.photos/seed/${client.id}-${n}/640/420`;
+// Thematic "cracked screen" demo attachments, generated and stored in
+// public/seed/ (the real app stores base64 data URLs). Served by Next at /seed/.
+const shot = (n) => `/seed/ecran-fissure-${n}.png`;
 
 /**
  * Three illustrative conversations per client, one of each kind:
@@ -36,7 +37,7 @@ function exampleConversationsFor(client, i) {
           role: "USER",
           content:
             "Bonjour, voici deux photos de l'écran de mon appareil qui s'est fissuré. Est-ce pris en charge par la garantie ?",
-          images: [shot(client, 1), shot(client, 2)],
+          images: [shot(1), shot(2)],
         },
         {
           role: "ASSISTANT",
