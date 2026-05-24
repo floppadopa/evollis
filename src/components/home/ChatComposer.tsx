@@ -6,6 +6,7 @@ import {
   useState,
   useCallback,
   type ChangeEvent,
+  type ClipboardEvent,
   type KeyboardEvent,
 } from "react";
 
@@ -91,6 +92,23 @@ export default function ChatComposer({
     setImages((prev) => [...prev, ...dataUrls].slice(0, MAX_IMAGES));
   }, []);
 
+  // Paste an image straight from the clipboard (Ctrl/Cmd+V).
+  const handlePaste = useCallback(
+    async (e: ClipboardEvent<HTMLTextAreaElement>) => {
+      if (!allowImages) return;
+      // getAsFile() must run synchronously, before any await.
+      const files = Array.from(e.clipboardData.items)
+        .filter((it) => it.kind === "file" && it.type.startsWith("image/"))
+        .map((it) => it.getAsFile())
+        .filter((f): f is File => f !== null);
+      if (files.length === 0) return;
+      e.preventDefault(); // don't drop the binary into the textarea
+      const dataUrls = await Promise.all(files.map(readAsDataURL));
+      setImages((prev) => [...prev, ...dataUrls].slice(0, MAX_IMAGES));
+    },
+    [allowImages],
+  );
+
   const removeImage = useCallback((index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
   }, []);
@@ -130,6 +148,7 @@ export default function ChatComposer({
         value={currentValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        onPaste={handlePaste}
         rows={1}
         placeholder={placeholder}
         aria-label="Écrivez votre invite à Evollis."
