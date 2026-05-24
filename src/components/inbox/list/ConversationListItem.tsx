@@ -3,11 +3,10 @@
 import "./_css/ConversationListItem.css";
 
 import Link from "next/link";
-import { useParams, useRouter } from "next/navigation";
 
 import { type IntentCategory, type MessageRole } from "@prisma/client";
 
-import { api, type RouterOutputs } from "~/trpc/react";
+import { type RouterOutputs } from "~/trpc/react";
 
 import Avatar from "~/components/inbox/ui/Avatar";
 import ChannelIcon from "~/components/inbox/ui/ChannelIcon";
@@ -41,7 +40,6 @@ export default function ConversationListItem({
   const {
     id,
     title,
-    status,
     priority,
     category,
     channel,
@@ -54,49 +52,6 @@ export default function ConversationListItem({
     labels,
   } = conversation;
 
-  const router = useRouter();
-  const params = useParams<{ id?: string }>();
-  const utils = api.useUtils();
-
-  // Refresh the list, the tab counts, and (if open) the thread itself.
-  async function invalidate() {
-    await Promise.all([
-      utils.inbox.listConversations.invalidate(),
-      utils.inbox.counts.invalidate(),
-    ]);
-  }
-
-  const archiveMutation = api.inbox.setStatus.useMutation({ onSuccess: invalidate });
-  const deleteMutation = api.inbox.deleteConversation.useMutation({
-    onSuccess: async () => {
-      await invalidate();
-      // If the deleted conversation is the one open in the detail pane, leave it.
-      if (params?.id === id) router.push("/inbox");
-    },
-  });
-
-  const actionPending = archiveMutation.isPending || deleteMutation.isPending;
-
-  function handleArchive(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (actionPending) return;
-    archiveMutation.mutate({ conversationId: id, status: "ARCHIVED" });
-  }
-
-  function handleDelete(e: React.MouseEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (actionPending) return;
-    if (
-      !window.confirm(
-        "Supprimer définitivement cette conversation et tous ses messages ?",
-      )
-    )
-      return;
-    deleteMutation.mutate({ conversationId: id });
-  }
-
   const isUnread = unreadCount > 0;
   const displayName = client.name ?? "Client inconnu";
 
@@ -104,7 +59,6 @@ export default function ConversationListItem({
   const previewText = lastMessagePreview ?? title ?? "Aucun message";
 
   return (
-    <div className="conv-item-wrap">
     <Link
       href={`/inbox/${id}`}
       className={`conv-item${selected ? " conv-item--selected" : ""}${
@@ -176,36 +130,5 @@ export default function ConversationListItem({
         )}
       </span>
     </Link>
-
-      {/* Hover actions — siblings of the Link so they don't nest in the anchor. */}
-      <div className="conv-item-actions">
-        {status !== "ARCHIVED" && (
-          <button
-            type="button"
-            className="conv-item-action"
-            onClick={handleArchive}
-            disabled={actionPending}
-            aria-label="Archiver la conversation"
-            title="Archiver"
-          >
-            <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
-              <path d="M216,56H40A8,8,0,0,0,32,64V80A16,16,0,0,0,48,96V200a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V96a16,16,0,0,0,16-16V64A8,8,0,0,0,216,56ZM192,200H64V96H192ZM208,80H48V72H208ZM152,128a8,8,0,0,1-8,8H112a8,8,0,0,1,0-16h32A8,8,0,0,1,152,128Z" />
-            </svg>
-          </button>
-        )}
-        <button
-          type="button"
-          className="conv-item-action conv-item-action--danger"
-          onClick={handleDelete}
-          disabled={actionPending}
-          aria-label="Supprimer la conversation"
-          title="Supprimer"
-        >
-          <svg width="16" height="16" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
-            <path d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z" />
-          </svg>
-        </button>
-      </div>
-    </div>
   );
 }

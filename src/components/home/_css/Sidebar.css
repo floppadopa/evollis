@@ -128,6 +128,65 @@
   white-space: nowrap;
 }
 
+/* ── Row hover actions (archive / delete) ─────────────────────────────────── */
+.sidebar-recent-wrap {
+  position: relative;
+}
+
+.sidebar-recent-actions {
+  position: absolute;
+  top: 50%;
+  right: 0.25rem;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding-left: 0.375rem;
+  border-radius: 0.375rem;
+  background: var(--bg-300);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.sidebar-recent-wrap:hover .sidebar-recent-actions,
+.sidebar-recent-actions:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-recent-action {
+  display: flex;
+  height: 1.5rem;
+  width: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--text-400);
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.sidebar-recent-action:hover {
+  background: var(--bg-400);
+  color: var(--text-100);
+}
+
+.sidebar-recent-action--danger:hover {
+  color: #ef4444;
+}
+
+.sidebar-recent-action:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 1px;
+}
+
+.sidebar-recent-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .sidebar-recent-skeleton-group {
   display: flex;
   flex-direction: column;

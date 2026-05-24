@@ -38,7 +38,8 @@ export const chatRouter = createTRPCRouter({
   // List the connected customer's conversations for the sidebar, most-recent first.
   listConversations: clientProcedure.query(async ({ ctx }) => {
     return ctx.db.conversation.findMany({
-      where: { clientId: ctx.currentClientId },
+      // Archived conversations are hidden from the customer's sidebar.
+      where: { clientId: ctx.currentClientId, status: { not: "ARCHIVED" } },
       orderBy: { lastMessageAt: "desc" },
       select: {
         id: true,
@@ -109,6 +110,30 @@ export const chatRouter = createTRPCRouter({
           : { status: "ESCALATED", takenOver: true },
       });
       return { resolved: input.resolved };
+    }),
+
+  // Archive one of the customer's own conversations (hides it from the sidebar).
+  archiveConversation: clientProcedure
+    .input(z.object({ conversationId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // updateMany scopes by clientId so a customer can only archive their own.
+      await ctx.db.conversation.updateMany({
+        where: { id: input.conversationId, clientId: ctx.currentClientId },
+        data: { status: "ARCHIVED" },
+      });
+      return { id: input.conversationId };
+    }),
+
+  // Permanently delete one of the customer's own conversations (messages and
+  // participants cascade — see schema onDelete).
+  deleteConversation: clientProcedure
+    .input(z.object({ conversationId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // deleteMany scopes by clientId so a customer can only delete their own.
+      await ctx.db.conversation.deleteMany({
+        where: { id: input.conversationId, clientId: ctx.currentClientId },
+      });
+      return { id: input.conversationId };
     }),
 
   // Send a message from the connected customer, then run the AI pipeline:

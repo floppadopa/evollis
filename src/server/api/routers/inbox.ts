@@ -347,17 +347,6 @@ export const inboxRouter = createTRPCRouter({
       });
     }),
 
-  // ── deleteConversation ──────────────────────────────────────────────────
-  // Hard delete; messages and participants cascade (see schema onDelete).
-  deleteConversation: agentProcedure
-    .input(z.object({ conversationId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      await ctx.db.conversation.delete({
-        where: { id: input.conversationId },
-      });
-      return { id: input.conversationId };
-    }),
-
   // ── setPriority ───────────────────────────────────────────────────────────
   setPriority: agentProcedure
     .input(
