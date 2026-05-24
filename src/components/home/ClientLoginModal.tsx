@@ -11,8 +11,9 @@ import { loginAsClient } from "~/server/auth/actions";
 import Avatar from "~/components/inbox/ui/Avatar";
 
 /**
- * Demo connection modal for the customer chat. One-click sign-in to a seeded
- * client profile, which scopes the chat to that customer's conversations.
+ * Demo connection modal for the customer chat. Pre-filled (cosmetic) creds plus
+ * one-click sign-in to a seeded client profile, which scopes the chat to that
+ * customer's conversations.
  */
 export default function ClientLoginModal() {
   const router = useRouter();
@@ -26,6 +27,9 @@ export default function ClientLoginModal() {
     (p) => p.name !== "Lucas Petit",
   );
 
+  const firstProfile = visibleProfiles[0];
+  const defaultEmail = firstProfile?.email ?? "camille.laurent@example.fr";
+
   function handleLogin(clientId: string) {
     startTransition(async () => {
       await loginAsClient(clientId);
@@ -33,6 +37,12 @@ export default function ClientLoginModal() {
       queryClient.clear();
       router.refresh();
     });
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!firstProfile) return;
+    handleLogin(firstProfile.id);
   }
 
   return (
@@ -60,13 +70,57 @@ export default function ClientLoginModal() {
             Ceci est une démo, pas une application prête pour la production.
           </p>
           <p className="client-login__note-text">
-            <strong>Comment l&apos;utiliser :</strong> cliquez sur un profil
-            ci-dessous pour vous connecter.
+            <strong>Comment l&apos;utiliser :</strong> les identifiants sont
+            pré-remplis — cliquez sur « Se connecter », ou choisissez un profil
+            ci-dessous.
           </p>
         </div>
 
+        {/* Cosmetic pre-filled credentials (locked in demo mode) */}
+        <form className="client-login__form" onSubmit={handleSubmit} noValidate>
+          <div className="client-login__field">
+            <label className="client-login__label" htmlFor="client-email">
+              Adresse e-mail
+            </label>
+            <input
+              id="client-email"
+              type="email"
+              className="client-login__input"
+              defaultValue={defaultEmail}
+              autoComplete="email"
+              disabled
+            />
+          </div>
+
+          <div className="client-login__field">
+            <label className="client-login__label" htmlFor="client-password">
+              Mot de passe
+            </label>
+            <input
+              id="client-password"
+              type="password"
+              className="client-login__input"
+              defaultValue="evollis-demo"
+              autoComplete="current-password"
+              disabled
+            />
+          </div>
+
+          <p className="client-login__locked-hint">
+            🔒 Champs verrouillés en mode démo.
+          </p>
+
+          <button
+            type="submit"
+            className="client-login__submit"
+            disabled={pending || !firstProfile}
+          >
+            {pending ? "Connexion…" : "Se connecter"}
+          </button>
+        </form>
+
         <div className="client-login__divider" aria-hidden="true">
-          Choisir un profil
+          ou choisir un profil
         </div>
 
         {isLoading ? (
