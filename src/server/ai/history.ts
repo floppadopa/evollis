@@ -23,7 +23,16 @@ export function toChatMessages(messages: ThreadMessage[]): ChatMessage[] {
   const out: ChatMessage[] = [];
   for (const m of messages) {
     if (m.role === MessageRole.USER) {
-      if (m.images && m.images.length > 0) {
+      // OpenAI can only fetch data: URIs or absolute http(s) URLs — drop
+      // anything else (e.g. relative "/seed/..." demo paths) so the vision
+      // call doesn't 400 on an image it can't download.
+      const usable = (m.images ?? []).filter(
+        (u) =>
+          u.startsWith("data:") ||
+          u.startsWith("http://") ||
+          u.startsWith("https://"),
+      );
+      if (usable.length > 0) {
         // Vision turn: text part (if any) followed by each image.
         out.push({
           role: "user",
@@ -31,7 +40,7 @@ export function toChatMessages(messages: ThreadMessage[]): ChatMessage[] {
             ...(m.content
               ? [{ type: "text" as const, text: m.content }]
               : []),
-            ...m.images.map((url) => ({
+            ...usable.map((url) => ({
               type: "image_url" as const,
               image_url: { url },
             })),
