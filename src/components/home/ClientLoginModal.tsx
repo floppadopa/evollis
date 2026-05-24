@@ -69,10 +69,6 @@ export default function ClientLoginModal() {
             pré-remplis — cliquez sur « Se connecter », ou choisissez un profil
             ci-dessous.
           </p>
-          <p className="client-login__note-text">
-            <strong>Stack :</strong> Next.js · tRPC · Prisma / PostgreSQL ·
-            OpenAI (catégorisation BERTopic en option).
-          </p>
         </div>
 
         {/* Cosmetic pre-filled credentials (locked in demo mode) */}
