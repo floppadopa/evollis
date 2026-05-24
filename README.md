@@ -69,28 +69,11 @@ Reply generation always uses OpenAI; the provider toggle only affects how the
 
 ## Quoi faire avec 3 jours de plus ?
 
-Rien dans l'immédiat : la tâche m'a pris ~4h, et je ne vois pas comment
-améliorer la qualité **sans bénéficier de données propriétaires**. En présence
-de ces données, il aurait fallu ~6-8h pour intégrer les améliorations suivantes :
-
-1. **Fine-tuner** le call d'API OpenAI (ou un autre modèle) de catégorisation
-   sur des exemples réels de l'entreprise — pertinent dès que le volume dépasse
-   500-1000 exemples, ce qui est le cas. — *~1h*
-2. **Se passer des appels d'API** pour la catégorisation : avec un grand volume
-   de questions (> 1000-5000), calculer les distances inter-cluster et fixer les
-   seuils à xx %. Cela rend la catégorisation plus fiable **et** moins chère
-   (c'est le rôle du service BERTopic, ici non entraîné faute de données). — *~1h*
-3. **M'entretenir avec le responsable commercial** pour établir le playbook des
-   réponses à donner selon la catégorie déterminée. — *~30min si les documents
-   existent déjà*
-4. **Authentification employée à l'échelle de l'organisation** (gestion de la
-   création de comptes employés). La partie employée n'était pas demandée au
-   départ, donc je ne suis pas allé jusqu'à construire l'infra entreprise, mais
-   ce serait à faire. — *temps dépendant de l'existant*
-5. **Authentification client à l'échelle de l'organisation** en connectant la
-   base de données à leur CMS. S'implémente trivialement via un webhook déclenché
-   à la création d'un nouveau client côté CMS, qui ajouterait ce client à la table
-   du projet (ou en interrogeant directement la table de leur CMS). Faute de cette
-   information, ce n'est pas implémenté. — *temps dépendant de l'existant*
-6. **Récupérer les e-mails en direct** (ou les utiliser comme données de seed).
-   Non fait faute d'accès, mais à prévoir. — *temps dépendant de l'existant*
+Pour la partie "Quoi faire avec 3j de plus" -> Rien, la tâche m'a pris 4h, et je ne vois pas comment améliorer la qualité sans bénéficier de données propriétaires. En présence des données propriétaires, ça aurait pris 6-8h pour intégrer les améliorations suivantes :<br>
+<br>
+1) On pourrait améliorer le call d'API d'openAI ( ou autre model ) de catégorisation en fine-tunant le modèle sur des exemples réels de l'entreprise. ( Si le volume d'exemple est supérieur à 500-1000, ce qui est le cas ) - 1h<br>
+2) On pourrait se passer de calls d'API pour la catégorisation si j'avais des exemples de questions en grande quantité ( > 1000-5000 ) pour calculer les distances inter-cluster et déterminer les limites à xx%. Faire ça rend le processus de catégorisation plus fiable et pas cher. - 1h<br>
+3) Il aurait fallu que je m'entretienne avec le responsable commercial pour établir le playbook des réponses à donner en fonction de la catégorie déterminée. - 30min si documents déjà existants<br>
+4) J'aurais pu également ajouter un système d'authentification employée à l'échelle de l'organisation pour manager la création de comptes employés, mais la partie employée n'était de base pas demandée, donc je suis pas allé jusqu'à construire l'infra au niveau entreprise, mais ça aurait été à faire - Temps dépendant selon la qualité de ce qui existe déjà chez eux.<br>
+5) J'aurais également pu ajouter un système d'authentification client à l'échelle de l'organisation en connectant la database avec leur CMS, mais vu que j'ai pas cette info, je l'ai pas faite. Ça s'implémente trivialement en ajoutant un webhook lié au CMS trigger quand un nouveau client est créé, qui viendrait ajouter ce client à la table de données du projet ( Ou alors utiliser la table de leur CMS directement, mais dans le cadre de l'exercice, je ne l'ai pas, donc pas utilisée. ) - Temps dépendant selon la qualité de ce qui existe déjà chez eux.<br>
+5) Je n'ai pas fetch en live les mails ni utilisé leurs mails en seed data, vu que j'ai pas cette info, mais ça aurait été à faire. - Temps dépendant selon la qualité de ce qui existe déjà chez eux.
