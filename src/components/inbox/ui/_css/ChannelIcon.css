@@ -1,0 +1,6 @@
+.ev-channel-icon {
+  display: inline-block;
+  flex-shrink: 0;
+  color: var(--text-400);
+  vertical-align: middle;
+}

@@ -1,0 +1,122 @@
+/* ── InboxShell layout ─────────────────────────────────────────────────── */
+
+.inbox-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--bg-100);
+  color: var(--text-100);
+  overflow: hidden;
+}
+
+/* Top bar slot — fixed height, bottom border */
+.inbox-shell__topbar {
+  flex-shrink: 0;
+  height: 3.25rem;
+  border-bottom: 1px solid var(--border-200);
+  display: flex;
+  align-items: center;
+}
+
+/* Row beneath the top bar — fills remaining height */
+.inbox-shell__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── LEFT: conversation list slot ─────────────────────────────────────── */
+.inbox-list-slot {
+  flex-shrink: 0;
+  width: 22rem;
+  border-right: 1px solid var(--border-200);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.inbox-list-slot__placeholder {
+  padding: 1.25rem 1rem 0.75rem;
+}
+
+.inbox-list-slot__placeholder-heading {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  margin: 0 0 0.375rem;
+}
+
+.inbox-list-slot__placeholder-text {
+  font-size: 0.8125rem;
+  color: var(--text-500);
+  margin: 0;
+}
+
+/* ── RIGHT-OF-LIST: main content slot ────────────────────────────────── */
+.inbox-main-slot {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+/* ── /inbox empty state ───────────────────────────────────────────────── */
+.inbox-empty-state {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--text-500);
+}
+
+.inbox-empty-state__icon {
+  height: 2.5rem;
+  width: auto;
+  opacity: 0.5;
+  display: block;
+}
+
+.inbox-empty-state__text {
+  font-size: 0.875rem;
+  color: var(--text-400);
+  margin: 0;
+}
+
+/* ── /inbox/[id] two-panel layout ────────────────────────────────────── */
+.inbox-id-row {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+/* MIDDLE: conversation thread panel.
+   Clips so the header (and Batch-3 composer) stay fixed while the
+   MessageThread (flex:1; overflow-y:auto) scrolls on its own. */
+.inbox-conversation-slot {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* RIGHT: contact info panel. ContactPanel owns its own padding + scroll. */
+.inbox-contact-slot {
+  flex-shrink: 0;
+  width: 21rem;
+  min-height: 0;
+  border-left: 1px solid var(--border-200);
+  overflow: hidden;
+}
+
+/* Blur the shell body when LoginModal is shown */
+.inbox-shell--blur .inbox-shell__body {
+  filter: blur(4px);
+  pointer-events: none;
+  user-select: none;
+}

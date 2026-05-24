@@ -1,0 +1,11 @@
+# BERTopic classifier service — Python 3.9+ (tested target: 3.11/3.13).
+# Install into a venv: see ml/bertopic/README.md
+bertopic==0.16.4
+sentence-transformers>=2.7,<4
+scikit-learn>=1.3
+umap-learn>=0.5.5
+hdbscan>=0.8.33
+numpy<2
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2

@@ -1,0 +1,81 @@
+/* UserMessage Component Styles */
+
+.user-message {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.user-message-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  max-width: 85%;
+}
+
+.user-message-bubble {
+  border-radius: 0.75rem;
+  background-color: var(--bg-300);
+  padding: 0.625rem 1rem;
+  color: var(--text-100);
+  min-width: 0;
+}
+
+.user-message-text {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* Center the 28px avatar with the first line of text:
+   bubble padding-top (0.625rem) + half of (line-height 1.5em − avatar). */
+.user-message-avatar {
+  flex-shrink: 0;
+  margin-top: calc(0.625rem + (1.5em - 28px) / 2);
+}
+
+.user-message-images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.375rem;
+}
+
+/* Add spacing only when text follows the images. */
+.user-message-images:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+.user-message-image {
+  max-height: 14rem;
+  max-width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  display: block;
+}
+
+.user-message-actions {
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.user-message:hover .user-message-actions,
+.user-message:focus-within .user-message-actions {
+  opacity: 1;
+}
+
+.user-message-time {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--text-500);
+}

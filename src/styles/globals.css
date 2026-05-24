@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/*
+ * Home (Evollis) dark palette.
+ * Referenced from src/components/home/* via Tailwind arbitrary values, e.g.
+ * bg-[var(--bg-100)] / text-[var(--text-500)] / border-[var(--border-300)].
+ */
+:root {
+  --always-black: #000000;
+
+  /* Surfaces — Evollis deep blue-grey. bg-000 elevated input, bg-100 page, 300/400 hover */
+  --bg-000: #191f28;
+  --bg-100: #12161d;
+  --bg-200: #0d1016;
+  --bg-300: #212833;
+  --bg-400: #2d3644;
+
+  /* Text — cool neutral whites, 100 primary down to 500 muted/placeholder */
+  --text-000: #ffffff;
+  --text-100: #eef3f3;
+  --text-200: #d7e1e1;
+  --text-300: #aab9b9;
+  --text-400: #7b8b8b;
+  --text-500: #5d6c6c;
+
+  /* Borders — blue-grey */
+  --border-100: #404b5c;
+  --border-200: #303846;
+  --border-300: #242a34;
+
+  /* Accents — Evollis brand teal (logo gradient) */
+  --accent-brand: #46d1d2;
+  --accent-main-100: #46d1d2;
+  --accent-100: #46d1d2;
+  --on-accent: #0c0f14;
+}
+
+/*
+ * Light palette — applied when <html data-theme="light"> (set by the theme
+ * toggle and the bootstrap script in the root layout). Same variable names, so
+ * every component adapts automatically.
+ */
+:root[data-theme="light"] {
+  --always-black: #000000;
+
+  --bg-000: #ffffff; /* elevated input / cards */
+  --bg-100: #f7f8fa; /* page */
+  --bg-200: #e9ebef; /* deepest / backdrops / skeletons */
+  --bg-300: #eceef3; /* hover */
+  --bg-400: #e1e4ea; /* stronger hover / elevation */
+
+  --text-000: #000000;
+  --text-100: #161b22; /* primary */
+  --text-200: #2b313b;
+  --text-300: #4a525e; /* secondary */
+  --text-400: #6b7480; /* muted */
+  --text-500: #8b939e; /* placeholder */
+
+  --border-100: #c3c9d2;
+  --border-200: #dde1e7;
+  --border-300: #e8ebef;
+
+  /* Deeper teal for enough contrast on light surfaces; white text on it. */
+  --accent-brand: #129b9c;
+  --accent-main-100: #129b9c;
+  --accent-100: #129b9c;
+  --on-accent: #ffffff;
+}
+
+/* Pin the page background so the overscroll area (and anything not covered by a
+   container) shows the theme background instead of the browser default. */
+html,
+body {
+  background-color: var(--bg-100);
+}

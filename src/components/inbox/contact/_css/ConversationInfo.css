@@ -1,0 +1,152 @@
+/* ── ConversationInfo ───────────────────────────────────────────────────── */
+
+.conv-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 1.25rem;
+}
+
+/* ── Section header ─────────────────────────────────────────────────────── */
+
+.conv-info__heading {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  margin: 0 0 1rem;
+}
+
+/* ── Field list ─────────────────────────────────────────────────────────── */
+
+.conv-info__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border-100);
+}
+
+.conv-info__field {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5625rem 0;
+  border-bottom: 1px solid var(--border-100);
+  min-width: 0;
+}
+
+.conv-info__field-label {
+  flex-shrink: 0;
+  width: 6rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-400);
+  padding-top: 0.05rem;
+  line-height: 1.4;
+}
+
+.conv-info__field-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8125rem;
+  color: var(--text-200);
+  line-height: 1.4;
+}
+
+/* ── Channel value ───────────────────────────────────────────────────────── */
+
+.conv-info__channel-value {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--text-200);
+}
+
+.conv-info__channel-label {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+/* ── Conversation ID row ─────────────────────────────────────────────────── */
+
+.conv-info__id-row {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.conv-info__id-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.7rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--text-400);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+.conv-info__copy-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-500);
+  cursor: pointer;
+  transition: background 120ms, color 120ms, border-color 120ms;
+  padding: 0;
+}
+
+.conv-info__copy-btn:hover {
+  background: var(--bg-200);
+  border-color: var(--border-200);
+  color: var(--text-200);
+}
+
+.conv-info__copy-btn:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.conv-info__copy-feedback {
+  font-size: 0.6875rem;
+  color: var(--accent-brand);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* ── Skeleton ─────────────────────────────────────────────────────────────── */
+
+.conv-info--skeleton {
+  pointer-events: none;
+}
+
+.conv-info__skeleton-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5625rem 0;
+  border-bottom: 1px solid var(--border-100);
+}
+
+.conv-info__skeleton-label {
+  width: 4.5rem;
+  height: 0.625rem;
+  border-radius: 4px;
+  background: var(--bg-300);
+  flex-shrink: 0;
+}
+
+.conv-info__skeleton-value {
+  height: 0.625rem;
+  border-radius: 4px;
+  background: var(--bg-300);
+}

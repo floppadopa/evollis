@@ -1,0 +1,191 @@
+/* ── Participants ─────────────────────────────────────────────────────────── */
+
+.participants {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ── Section header ─────────────────────────────────────────────────────── */
+
+.participants__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.625rem;
+}
+
+.participants__heading {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  margin: 0;
+}
+
+/* ── Participant list ─────────────────────────────────────────────────────── */
+
+.participants__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--border-100);
+}
+
+/* ── Participant row ─────────────────────────────────────────────────────── */
+
+.participants__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4375rem 0.25rem;
+  border-bottom: 1px solid var(--border-100);
+  min-width: 0;
+}
+
+.participants__row-avatar {
+  flex-shrink: 0;
+}
+
+.participants__row-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8125rem;
+  color: var(--text-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* ── Remove button ─────────────────────────────────────────────────────────── */
+
+.participants__remove-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: var(--text-400);
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1;
+  transition: background 120ms, color 120ms;
+  padding: 0;
+}
+
+.participants__remove-btn:hover:not(:disabled) {
+  background: var(--bg-300);
+  color: var(--text-100);
+}
+
+.participants__remove-btn:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.participants__remove-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+
+.participants__empty {
+  padding: 0.625rem 0;
+  font-size: 0.8125rem;
+  color: var(--text-500);
+  font-style: italic;
+  margin: 0;
+  border-top: 1px solid var(--border-100);
+}
+
+/* ── Add participant control ─────────────────────────────────────────────── */
+
+.participants__add {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.625rem;
+  min-width: 0;
+}
+
+.participants__add-select {
+  flex: 1;
+  min-width: 0;
+  background: var(--bg-200);
+  border: 1px solid var(--border-200);
+  border-radius: 5px;
+  color: var(--text-200);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  padding: 0.28125rem 0.5rem;
+  cursor: pointer;
+  transition: border-color 120ms;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+  /* custom chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  padding-right: 1.75rem;
+}
+
+.participants__add-select:focus {
+  outline: none;
+  border-color: var(--accent-brand);
+}
+
+.participants__add-select:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.participants__add-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.participants__add-select option {
+  background: var(--bg-100);
+  color: var(--text-100);
+}
+
+.participants__add-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.28125rem 0.75rem;
+  border-radius: 5px;
+  border: 1px solid var(--border-200);
+  background: var(--bg-200);
+  color: var(--text-200);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition: background 120ms, color 120ms;
+  font-family: inherit;
+}
+
+.participants__add-btn:hover:not(:disabled) {
+  background: var(--bg-300);
+  color: var(--text-100);
+}
+
+.participants__add-btn:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.participants__add-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

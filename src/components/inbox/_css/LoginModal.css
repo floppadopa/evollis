@@ -1,0 +1,260 @@
+/* LoginModal.css */
+
+/* ── Backdrop ─────────────────────────────────────────────────────────────── */
+.login-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(31, 30, 29, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 1rem;
+}
+
+/* ── Card ─────────────────────────────────────────────────────────────────── */
+.login-modal__card {
+  background-color: var(--bg-100);
+  border: 1px solid var(--border-200);
+  border-radius: 0.875rem;
+  padding: 2rem;
+  width: 100%;
+  max-width: 26rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.login-modal__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  text-align: center;
+}
+
+.login-modal__logo {
+  height: 2rem;
+  width: auto;
+  display: block;
+}
+
+.login-modal__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-100);
+  line-height: 1.3;
+}
+
+.login-modal__subtitle {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--text-400);
+  line-height: 1.5;
+}
+
+/* ── Demo note ───────────────────────────────────────────────────────────── */
+.login-modal__note {
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--border-200);
+  border-radius: 0.625rem;
+  background-color: color-mix(in srgb, var(--text-500) 8%, transparent);
+}
+
+.login-modal__note-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-200);
+}
+
+.login-modal__note-text {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text-400);
+}
+
+/* ── Credential form ─────────────────────────────────────────────────────── */
+.login-modal__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.login-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+}
+
+.login-modal__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-300);
+  letter-spacing: 0.01em;
+}
+
+.login-modal__input {
+  background-color: var(--bg-000);
+  border: 1px solid var(--border-200);
+  border-radius: 0.5rem;
+  padding: 0.5625rem 0.75rem;
+  color: var(--text-100);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease;
+}
+
+.login-modal__input::placeholder {
+  color: var(--text-500);
+}
+
+.login-modal__input:hover:not(:disabled) {
+  border-color: var(--border-100);
+}
+
+.login-modal__input:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+  border-color: var(--accent-brand);
+}
+
+.login-modal__input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: var(--text-400);
+}
+
+.login-modal__locked-hint {
+  margin: 0;
+  font-size: 0.6875rem;
+  color: var(--text-500);
+}
+
+.login-modal__submit {
+  margin-top: 0.25rem;
+  background-color: var(--accent-brand);
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, opacity 0.15s ease;
+  width: 100%;
+}
+
+.login-modal__submit:hover:not(:disabled) {
+  background-color: var(--accent-main-100);
+}
+
+.login-modal__submit:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.login-modal__submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+.login-modal__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-500);
+  font-size: 0.75rem;
+}
+
+.login-modal__divider::before,
+.login-modal__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-300);
+}
+
+/* ── Profile grid ─────────────────────────────────────────────────────────── */
+.login-modal__profiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem;
+}
+
+.login-modal__profile-skeleton {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.625rem;
+}
+
+.login-modal__skeleton-card {
+  height: 4.5rem;
+  background-color: var(--bg-200);
+  border-radius: 0.625rem;
+  animation: login-modal-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes login-modal-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+.login-modal__profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--bg-200);
+  border: 1px solid var(--border-300);
+  border-radius: 0.625rem;
+  padding: 0.875rem 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.login-modal__profile-card:hover:not(:disabled) {
+  background-color: var(--bg-300);
+  border-color: var(--border-200);
+}
+
+.login-modal__profile-card:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.login-modal__profile-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.login-modal__profile-name {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-100);
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.login-modal__profile-role {
+  font-size: 0.6875rem;
+  color: var(--text-400);
+  letter-spacing: 0.02em;
+}

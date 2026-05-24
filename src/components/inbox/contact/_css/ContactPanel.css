@@ -1,0 +1,93 @@
+/* ── ContactPanel ────────────────────────────────────────────────────────── */
+
+.contact-panel {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-100);
+  color: var(--text-200);
+  font-size: 0.8125rem;
+}
+
+/* ── Section wrapper ─────────────────────────────────────────────────────── */
+
+.contact-panel__section {
+  border-bottom: 1px solid var(--border-200);
+}
+
+.contact-panel__section:last-child {
+  border-bottom: none;
+}
+
+/* ── Section header (toggle button) ─────────────────────────────────────── */
+
+.contact-panel__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-align: left;
+  gap: 0.5rem;
+  transition: background 120ms;
+}
+
+.contact-panel__section-header:hover {
+  background: var(--bg-200);
+}
+
+.contact-panel__section-header:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: -2px;
+}
+
+/* Section title — small uppercase label */
+.contact-panel__section-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-400);
+  line-height: 1;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Chevron icon */
+.contact-panel__chevron {
+  flex-shrink: 0;
+  color: var(--text-500);
+  transition: transform 200ms ease;
+}
+
+.contact-panel__chevron--open {
+  transform: rotate(0deg);
+}
+
+.contact-panel__chevron--closed {
+  transform: rotate(-90deg);
+}
+
+/* ── Section body ────────────────────────────────────────────────────────── */
+
+.contact-panel__section-body {
+  overflow: hidden;
+}
+
+.contact-panel__section-body--open {
+  display: block;
+}
+
+.contact-panel__section-body--closed {
+  display: none;
+}
+
+/* Inner padding for section content */
+.contact-panel__section-content {
+  padding: 0 1rem 1rem;
+}

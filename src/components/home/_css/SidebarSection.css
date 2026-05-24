@@ -1,0 +1,50 @@
+/* SidebarSection Component Styles */
+
+.sidebar-section {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-section-header {
+  display: flex;
+  user-select: none;
+  align-items: center;
+  gap: 0.25rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--text-500);
+  transition: color 150ms;
+}
+
+.sidebar-section-header:hover {
+  color: var(--text-300);
+}
+
+.sidebar-section-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar-section-chevron {
+  opacity: 0;
+  transform: none;
+  transition: transform 0.15s, opacity 0.15s;
+}
+
+.sidebar-section-chevron--collapsed {
+  transform: rotate(-90deg);
+}
+
+.sidebar-section-header:hover .sidebar-section-chevron {
+  opacity: 0.6;
+}
+
+.sidebar-section-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}

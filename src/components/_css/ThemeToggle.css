@@ -1,0 +1,25 @@
+.theme-toggle {
+  display: inline-flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-200);
+  background-color: var(--bg-000);
+  color: var(--text-300);
+  cursor: pointer;
+  transition-property: color, background-color, border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.theme-toggle:hover {
+  background-color: var(--bg-300);
+  color: var(--text-100);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}

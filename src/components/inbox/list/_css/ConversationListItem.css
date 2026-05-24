@@ -1,0 +1,247 @@
+/* ── ConversationListItem ────────────────────────────────────────────────── */
+
+.conv-item {
+  position: relative;
+  display: flex;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem 0.625rem 0.875rem;
+  border-bottom: 1px solid var(--border-300);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.conv-item:hover {
+  background: var(--bg-200);
+}
+
+.conv-item:focus-visible {
+  outline: 2px solid var(--accent-brand, #d97757);
+  outline-offset: -2px;
+}
+
+/* ── Row hover actions (archive / delete) ─────────────────────────────────── */
+.conv-item-wrap {
+  position: relative;
+}
+
+.conv-item-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.conv-item-wrap:hover .conv-item-actions,
+.conv-item-actions:focus-within {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.conv-item-action {
+  display: flex;
+  height: 1.75rem;
+  width: 1.75rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background: var(--bg-100);
+  border: 1px solid var(--border-200);
+  color: var(--text-400);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+.conv-item-action:hover {
+  background: var(--bg-300);
+  color: var(--text-100);
+}
+
+.conv-item-action--danger:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.conv-item-action:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.conv-item-action:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Selected row */
+.conv-item--selected,
+.conv-item--selected:hover {
+  background: var(--bg-300);
+}
+
+/* Left accent bar (selected only) */
+.conv-item__accent {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: transparent;
+}
+
+.conv-item--selected .conv-item__accent {
+  background: var(--accent-brand, #d97757);
+}
+
+/* ── Avatar column ───────────────────────────────────────────────────────── */
+.conv-item__avatar {
+  flex-shrink: 0;
+  padding-top: 0.0625rem;
+}
+
+/* ── Main column ─────────────────────────────────────────────────────────── */
+.conv-item__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+  flex: 1;
+}
+
+/* Top line: name + meta */
+.conv-item__top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.conv-item__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text-200);
+}
+
+.conv-item--unread .conv-item__name {
+  font-weight: 700;
+  color: var(--text-100);
+}
+
+.conv-item__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
+.conv-item__time {
+  font-size: 0.6875rem;
+  color: var(--text-500);
+  white-space: nowrap;
+}
+
+.conv-item--unread .conv-item__time {
+  color: var(--text-400);
+}
+
+/* Unread count badge */
+.conv-item__unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.125rem;
+  height: 1.125rem;
+  padding: 0 0.3125rem;
+  border-radius: 9999px;
+  background: var(--accent-brand, #d97757);
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Second line: channel + category + priority */
+.conv-item__attrs {
+  display: flex;
+  align-items: center;
+  gap: 0.4375rem;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.conv-item__channel {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: var(--text-400);
+}
+
+.conv-item__category {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0.0625rem 0.375rem;
+  border-radius: 0.3125rem;
+  background: var(--bg-300);
+  color: var(--text-400);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+/* Third line: preview */
+.conv-item__preview {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--text-500);
+}
+
+.conv-item--unread .conv-item__preview {
+  color: var(--text-400);
+}
+
+.conv-item__preview-prefix {
+  color: var(--text-400);
+  font-weight: 500;
+}
+
+/* Fourth line: labels + assignee */
+.conv-item__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  margin-top: 0.125rem;
+}
+
+.conv-item__labels {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+  max-height: 1.25rem;
+  overflow: hidden;
+  flex-wrap: nowrap;
+}
+
+.conv-item__assignee {
+  display: inline-flex;
+  flex-shrink: 0;
+}

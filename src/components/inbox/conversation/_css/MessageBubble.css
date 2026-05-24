@@ -1,0 +1,208 @@
+/* Base row layout for chat-style messages (USER / ASSISTANT / OPERATOR public) */
+.msg-bubble {
+  display: flex;
+  gap: 0.625rem;
+  max-width: 100%;
+  margin: 0.25rem 0;
+}
+
+/* Attached images on a customer message */
+.msg-bubble__images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-bottom: 0.375rem;
+}
+
+.msg-bubble__image {
+  max-height: 12rem;
+  max-width: 100%;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  display: block;
+}
+
+.msg-bubble__avatar {
+  flex-shrink: 0;
+  padding-top: 1.4rem;
+}
+
+.msg-bubble__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: min(80%, 36rem);
+}
+
+.msg-bubble__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+  padding: 0 0.25rem;
+}
+
+.msg-bubble__author {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-200);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msg-bubble__time {
+  font-size: 0.6875rem;
+  color: var(--text-500);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.msg-bubble__content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  padding: 0.625rem 0.875rem;
+  border-radius: 1rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* ── 1. USER (the customer) — left, neutral ─────────────────────────────── */
+.msg-bubble--user {
+  flex-direction: row;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+.msg-bubble--user .msg-bubble__content {
+  background: var(--bg-300);
+  color: var(--text-100);
+  border-top-left-radius: 0.25rem;
+}
+
+/* ── 2. ASSISTANT (Evollis IA) — left, branded ──────────────────────────── */
+.msg-bubble--assistant {
+  flex-direction: row;
+  align-self: flex-start;
+  margin-right: auto;
+}
+
+.msg-bubble--assistant .msg-bubble__author {
+  color: var(--accent-brand);
+}
+
+.msg-bubble--assistant .msg-bubble__content {
+  background: var(--bg-200);
+  color: var(--text-100);
+  border: 1px solid color-mix(in srgb, var(--accent-brand) 28%, transparent);
+  border-left: 3px solid var(--accent-brand);
+  border-top-left-radius: 0.25rem;
+}
+
+/* Evollis icon badge used as the assistant avatar */
+.msg-bubble__ai-badge {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--accent-brand) 16%, var(--bg-200));
+  border: 1px solid color-mix(in srgb, var(--accent-brand) 35%, transparent);
+  overflow: hidden;
+}
+
+.msg-bubble__ai-badge img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── 3. OPERATOR public reply — right, brand accent ─────────────────────── */
+.msg-bubble--operator {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.msg-bubble--operator .msg-bubble__body {
+  align-items: flex-end;
+}
+
+.msg-bubble--operator .msg-bubble__meta {
+  flex-direction: row-reverse;
+}
+
+.msg-bubble--operator .msg-bubble__content {
+  background: var(--accent-main-100);
+  color: #fff;
+  border-top-right-radius: 0.25rem;
+}
+
+/* ── 4. OPERATOR private note — amber internal card ─────────────────────── */
+.msg-note {
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.75rem 0.875rem 0.75rem 1rem;
+  border-radius: 0.625rem;
+  background: color-mix(in srgb, #f59e0b 14%, transparent);
+  border: 1px solid color-mix(in srgb, #f59e0b 30%, transparent);
+  border-left: 3px solid #f59e0b;
+}
+
+.msg-note__header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f0b34a;
+  margin-bottom: 0.4rem;
+}
+
+.msg-note__lock {
+  font-size: 0.8125rem;
+  line-height: 1;
+}
+
+.msg-note__author {
+  color: #f0b34a;
+}
+
+.msg-note__sep {
+  color: color-mix(in srgb, #f59e0b 50%, transparent);
+}
+
+.msg-note__content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-200);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.msg-note__time {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.6875rem;
+  color: var(--text-500);
+}
+
+/* ── 5. SYSTEM — centered muted line ────────────────────────────────────── */
+.msg-system {
+  align-self: center;
+  max-width: 90%;
+  margin: 0.5rem auto;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-500);
+  text-align: center;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}

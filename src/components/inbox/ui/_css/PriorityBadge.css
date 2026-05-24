@@ -1,0 +1,17 @@
+.ev-priority-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.ev-priority-badge__icon {
+  flex-shrink: 0;
+}
+
+.ev-priority-badge__label {
+  line-height: 1.2;
+}

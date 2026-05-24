@@ -1,0 +1,131 @@
+.msg-thread {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg-100);
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-100) transparent;
+}
+
+.msg-thread::-webkit-scrollbar {
+  width: 10px;
+}
+
+.msg-thread::-webkit-scrollbar-thumb {
+  background: var(--border-100);
+  border-radius: 6px;
+  border: 3px solid var(--bg-100);
+}
+
+.msg-thread__inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2rem;
+  gap: 0.25rem;
+}
+
+/* ── Date separator pill ────────────────────────────────────────────────── */
+.msg-thread__date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 0 0.75rem;
+}
+
+.msg-thread__date::before,
+.msg-thread__date::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-300);
+}
+
+.msg-thread__date-pill {
+  flex-shrink: 0;
+  margin: 0 0.75rem;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  color: var(--text-400);
+  background: var(--bg-200);
+  border: 1px solid var(--border-300);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ── Empty state ────────────────────────────────────────────────────────── */
+.msg-thread__empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 8rem;
+  padding: 2rem;
+  font-size: 0.875rem;
+  color: var(--text-400);
+}
+
+/* ── Loading skeleton ───────────────────────────────────────────────────── */
+.msg-thread__skeleton {
+  display: flex;
+  gap: 0.625rem;
+  margin: 0.75rem 0;
+  max-width: min(80%, 36rem);
+}
+
+.msg-thread__skeleton--right {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+  margin-left: auto;
+}
+
+.msg-thread__skeleton-avatar {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  border-radius: 50%;
+  background: var(--bg-300);
+  animation: msg-thread-pulse 1.4s ease-in-out infinite;
+}
+
+.msg-thread__skeleton-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.3rem;
+}
+
+.msg-thread__skeleton-line {
+  height: 0.75rem;
+  border-radius: 0.375rem;
+  background: var(--bg-300);
+  animation: msg-thread-pulse 1.4s ease-in-out infinite;
+}
+
+.msg-thread__skeleton-line--wide {
+  width: 90%;
+}
+
+.msg-thread__skeleton-line--mid {
+  width: 60%;
+}
+
+.msg-thread__skeleton-line--narrow {
+  width: 40%;
+}
+
+@keyframes msg-thread-pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

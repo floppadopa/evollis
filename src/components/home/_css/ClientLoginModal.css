@@ -1,0 +1,251 @@
+/* ClientLoginModal — customer chat connection modal */
+
+.client-login__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background-color: color-mix(in srgb, var(--bg-200) 82%, transparent);
+  backdrop-filter: blur(6px);
+  overflow-y: auto;
+}
+
+.client-login__card {
+  width: 100%;
+  max-width: 26rem;
+  margin: auto;
+  border: 1px solid var(--border-200);
+  border-radius: 1rem;
+  background-color: var(--bg-100);
+  padding: 1.75rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.client-login__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.client-login__logo {
+  height: 2.25rem;
+  width: auto;
+  display: block;
+}
+
+.client-login__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-100);
+  letter-spacing: -0.01em;
+  margin: 0.25rem 0 0;
+}
+
+.client-login__subtitle {
+  font-size: 0.8125rem;
+  color: var(--text-400);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ── Demo note ──────────────────────────────────────────────────────────── */
+.client-login__note {
+  margin-bottom: 1rem;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid var(--border-200);
+  border-radius: 0.625rem;
+  background-color: color-mix(in srgb, var(--text-500) 8%, transparent);
+}
+
+.client-login__note-title {
+  margin: 0 0 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-200);
+}
+
+.client-login__note-text {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text-400);
+}
+
+/* ── Form ───────────────────────────────────────────────────────────────── */
+.client-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.client-login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.client-login__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-300);
+}
+
+.client-login__input {
+  width: 100%;
+  background-color: var(--bg-200);
+  border: 1px solid var(--border-200);
+  border-radius: 0.5rem;
+  color: var(--text-100);
+  font-size: 0.875rem;
+  font-family: inherit;
+  padding: 0.625rem 0.75rem;
+}
+
+.client-login__input:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.client-login__input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  color: var(--text-400);
+}
+
+.client-login__locked-hint {
+  margin: -0.125rem 0 0;
+  font-size: 0.6875rem;
+  color: var(--text-500);
+}
+
+.client-login__submit {
+  margin-top: 0.25rem;
+  width: 100%;
+  background-color: var(--accent-main-100);
+  color: var(--on-accent);
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 0.6875rem 1rem;
+  cursor: pointer;
+  transition: filter 0.15s ease, opacity 0.15s ease;
+}
+
+.client-login__submit:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.client-login__submit:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.client-login__submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ── Divider ────────────────────────────────────────────────────────────── */
+.client-login__divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0.875rem;
+  font-size: 0.75rem;
+  color: var(--text-500);
+}
+
+.client-login__divider::before,
+.client-login__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-200);
+}
+
+/* ── Profiles ───────────────────────────────────────────────────────────── */
+.client-login__profiles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.client-login__profile {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  text-align: left;
+  background-color: var(--bg-200);
+  border: 1px solid var(--border-200);
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.client-login__profile:hover:not(:disabled) {
+  background-color: var(--bg-300);
+  border-color: var(--border-100);
+}
+
+.client-login__profile:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+.client-login__profile:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.client-login__profile-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.client-login__profile-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-100);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.client-login__profile-email {
+  font-size: 0.75rem;
+  color: var(--text-400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Skeletons ──────────────────────────────────────────────────────────── */
+.client-login__skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.client-login__skeleton {
+  height: 3.25rem;
+  border-radius: 0.625rem;
+  background-color: color-mix(in srgb, var(--text-500) 12%, transparent);
+  animation: client-login-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes client-login-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}

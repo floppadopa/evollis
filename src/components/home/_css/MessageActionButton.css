@@ -1,0 +1,91 @@
+/* MessageActionButton Component Styles */
+
+.message-action {
+  display: flex;
+  height: 2rem;
+  width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  color: var(--text-500);
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.message-action:hover {
+  background-color: var(--bg-300);
+  color: var(--text-100);
+}
+
+.message-action:focus-visible {
+  outline: 2px solid var(--accent-brand);
+  outline-offset: 2px;
+}
+
+/* Press feedback */
+.message-action:active {
+  transform: scale(0.88);
+}
+
+.message-action:disabled {
+  cursor: default;
+}
+
+.message-action-icon {
+  display: flex;
+  height: 1.25rem;
+  width: 1.25rem;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Active / state animations ────────────────────────────────────────────── */
+
+/* A little pop whenever a button becomes active. */
+.message-action--active .message-action-icon,
+.message-action--copied .message-action-icon {
+  animation: message-action-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes message-action-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* Copied → check turns brand-coloured. */
+.message-action--copied,
+.message-action--copied:hover {
+  color: var(--accent-brand);
+}
+
+/* Thumbs feedback colours when selected. */
+.message-action--thumb-up.message-action--active,
+.message-action--thumb-up.message-action--active:hover {
+  color: var(--accent-brand);
+}
+
+.message-action--thumb-down.message-action--active,
+.message-action--thumb-down.message-action--active:hover {
+  color: #ef4444;
+}
+
+/* Retry → spin while regenerating. */
+.message-action--spinning .message-action-icon {
+  animation: message-action-spin 0.8s linear infinite;
+}
+
+@keyframes message-action-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .message-action--active .message-action-icon,
+  .message-action--copied .message-action-icon,
+  .message-action--spinning .message-action-icon,
+  .message-action:active {
+    animation: none;
+    transform: none;
+  }
+}

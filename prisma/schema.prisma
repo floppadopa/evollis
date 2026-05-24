@@ -1,0 +1,209 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+}
+
+// ============================================
+// Customer Support — Evollis
+// ============================================
+
+enum Channel {
+    WEB
+    EMAIL
+    WHATSAPP
+    SLACK
+    API
+    OTHER
+}
+
+enum ConversationStatus {
+    OPEN
+    PENDING
+    SNOOZED
+    ESCALATED // bot handed the thread to a human
+    RESOLVED
+    ARCHIVED
+}
+
+enum Priority {
+    URGENT
+    HIGH
+    MEDIUM
+    LOW
+    NONE
+}
+
+enum MessageRole {
+    USER // the end-customer
+    ASSISTANT // the AI bot
+    OPERATOR // a human support agent
+    SYSTEM // system / audit events
+}
+
+enum IntentCategory {
+    TECHNICAL
+    BILLING
+    GENERAL
+    UNKNOWN // mirror the BERTopic classifier labels
+}
+
+enum AgentRole {
+    ADMIN
+    AGENT
+}
+
+enum Availability {
+    ONLINE
+    BUSY
+    OFFLINE
+}
+
+// ---- People -------------------------------------------------
+
+// End-customer, identified independently of the input source.
+model Client {
+    id         String  @id @default(cuid())
+    externalId String? // id from the source system (email address, WhatsApp number, ...)
+    email      String?
+    name       String?
+    phone      String?
+    company    String?
+    avatarUrl  String?
+    channel    Channel @default(WEB) // channel the client was first seen on
+    metadata   Json    @default("{}") // free-form contact attributes shown in the panel
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    conversations Conversation[]
+
+    @@unique([channel, externalId])
+    @@index([email])
+}
+
+// A human support agent staffing the inbox. Also the "login profile" for the demo.
+model Agent {
+    id           String       @id @default(cuid())
+    email        String       @unique
+    name         String
+    avatarUrl    String?
+    role         AgentRole    @default(AGENT)
+    availability Availability @default(OFFLINE)
+    lastSeenAt   DateTime?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    assignedConversations Conversation[] @relation("ConversationAssignee")
+    authoredMessages      Message[]
+    participations        Participant[]
+}
+
+// ---- Conversations ------------------------------------------
+
+// A single conversation thread between a client and Evollis (bot + agents).
+model Conversation {
+    id       String @id @default(cuid())
+    clientId String
+    client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+    // null = Unassigned (drives the "Unassigned" inbox tab)
+    assigneeId String?
+    assignee   Agent?  @relation("ConversationAssignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+
+    channel  Channel            @default(WEB)
+    status   ConversationStatus @default(OPEN)
+    priority Priority           @default(NONE)
+    category IntentCategory? // latest classification, denormalized for filtering
+    title    String? // short summary shown in the list
+
+    takenOver Boolean @default(false) // true = bot paused, a human is handling this thread
+
+    // Inbox bookkeeping
+    lastMessageAt   DateTime  @default(now())
+    agentLastReadAt DateTime? // messages after this are "unread" in the inbox
+    snoozedUntil    DateTime?
+    resolvedAt      DateTime?
+
+    metadata  Json     @default("{}")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    messages     Message[]
+    labels       Label[]       @relation("ConversationLabels")
+    participants Participant[]
+
+    @@index([clientId])
+    @@index([assigneeId])
+    @@index([status])
+    @@index([priority])
+    @@index([category])
+    @@index([lastMessageAt])
+    @@index([createdAt])
+}
+
+// One message in a conversation, from any author (customer, bot, agent, system).
+model Message {
+    id             String       @id @default(cuid())
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+    role      MessageRole
+    content   String      @db.Text
+    channel   Channel     @default(WEB)
+    isPrivate Boolean     @default(false) // private note (agents only) vs. public reply
+
+    // Authoring — set on OPERATOR messages
+    authorAgentId String?
+    authorAgent   Agent?  @relation(fields: [authorAgentId], references: [id], onDelete: SetNull)
+
+    // Classification — set on USER messages by the BERT classifier
+    category           IntentCategory?
+    categoryConfidence Float?
+
+    // Generation metadata — set on ASSISTANT messages
+    modelName String? // e.g. "gemini-2.5-flash"
+    tokensIn  Int?
+    tokensOut Int?
+    latencyMs Int?
+
+    externalId String? // source message id, for idempotent ingestion
+    metadata   Json     @default("{}")
+    createdAt  DateTime @default(now())
+
+    @@unique([conversationId, externalId]) // dedup re-delivered events
+    @@index([conversationId, createdAt])
+    @@index([authorAgentId])
+    @@index([category])
+}
+
+// A colored tag applied to conversations (many-to-many).
+model Label {
+    id          String  @id @default(cuid())
+    name        String  @unique
+    color       String  @default("#d97757") // hex, shown as a chip
+    description String?
+
+    createdAt DateTime @default(now())
+
+    conversations Conversation[] @relation("ConversationLabels")
+}
+
+// An agent watching a conversation (shown in the contact panel).
+model Participant {
+    conversationId String
+    conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+    agentId        String
+    agent          Agent        @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+    createdAt DateTime @default(now())
+
+    @@id([conversationId, agentId])
+    @@index([agentId])
+}
