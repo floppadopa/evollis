@@ -4,6 +4,7 @@ import "./_css/LoginModal.css";
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { api } from "~/trpc/react";
 import { loginAs } from "~/server/auth/actions";
 import Avatar from "~/components/inbox/ui/Avatar";
@@ -15,7 +16,7 @@ const ROLE_LABELS: Record<string, string> = {
 
 export default function LoginModal() {
   const router = useRouter();
-  const utils = api.useUtils();
+  const queryClient = useQueryClient();
   const [pending, startTransition] = useTransition();
 
   const { data: profiles, isLoading } = api.auth.listProfiles.useQuery();
@@ -26,7 +27,8 @@ export default function LoginModal() {
   function handleLogin(agentId: string) {
     startTransition(async () => {
       await loginAs(agentId);
-      await utils.auth.me.invalidate();
+      // Clear the previous identity's cached queries before loading this one.
+      queryClient.clear();
       router.refresh();
     });
   }

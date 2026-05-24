@@ -4,6 +4,7 @@ import "./_css/AgentBar.css";
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { api } from "~/trpc/react";
 import { logout } from "~/server/auth/actions";
 import Avatar from "~/components/inbox/ui/Avatar";
@@ -26,6 +27,7 @@ const ROLE_LABELS: Record<string, string> = {
 export default function AgentBar() {
   const router = useRouter();
   const utils = api.useUtils();
+  const queryClient = useQueryClient();
   const [pendingLogout, startLogout] = useTransition();
   const [pendingAvail, startAvail] = useTransition();
 
@@ -47,7 +49,8 @@ export default function AgentBar() {
   function handleLogout() {
     startLogout(async () => {
       await logout();
-      await utils.auth.me.invalidate();
+      // Wipe the cache so the next agent never sees the previous one's inbox.
+      queryClient.clear();
       router.refresh();
     });
   }

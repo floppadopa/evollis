@@ -4,6 +4,7 @@ import "./_css/ClientLoginModal.css";
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { api } from "~/trpc/react";
 import { loginAsClient } from "~/server/auth/actions";
@@ -16,7 +17,7 @@ import Avatar from "~/components/inbox/ui/Avatar";
  */
 export default function ClientLoginModal() {
   const router = useRouter();
-  const utils = api.useUtils();
+  const queryClient = useQueryClient();
   const [pending, startTransition] = useTransition();
 
   const { data: profiles, isLoading } = api.chat.listClientProfiles.useQuery();
@@ -27,7 +28,8 @@ export default function ClientLoginModal() {
   function handleLogin(clientId: string) {
     startTransition(async () => {
       await loginAsClient(clientId);
-      await utils.chat.me.invalidate();
+      // Clear the previous identity's cached queries before loading this one.
+      queryClient.clear();
       router.refresh();
     });
   }

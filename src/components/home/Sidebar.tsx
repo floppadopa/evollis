@@ -5,6 +5,7 @@ import "./_css/Sidebar.css";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import SidebarNavItem from "~/components/home/SidebarNavItem";
 import SidebarSection from "~/components/home/SidebarSection";
@@ -26,7 +27,7 @@ const ICON = {
 
 export default function Sidebar({ onToggle }: SidebarProps) {
   const router = useRouter();
-  const utils = api.useUtils();
+  const queryClient = useQueryClient();
   const conversations = api.chat.listConversations.useQuery();
   const { data: me } = api.chat.me.useQuery();
   const [loggingOut, startLogout] = useTransition();
@@ -34,7 +35,8 @@ export default function Sidebar({ onToggle }: SidebarProps) {
   const handleLogout = () => {
     startLogout(async () => {
       await clientLogout();
-      await utils.chat.me.invalidate();
+      // Wipe the cache so the next user never sees the previous one's threads.
+      queryClient.clear();
       router.push("/");
       router.refresh();
     });
