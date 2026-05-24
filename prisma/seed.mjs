@@ -11,6 +11,107 @@ const DAY = 24 * HOUR;
 const now = Date.now();
 const rand = (a, b) => Math.floor(a + Math.random() * (b - a));
 const avatar = (seed) => `https://i.pravatar.cc/150?u=${encodeURIComponent(seed)}`;
+// Placeholder attachment image (the real app stores base64 data URLs).
+const shot = (client, n) => `https://picsum.photos/seed/${client.id}-${n}/640/420`;
+
+/**
+ * Three illustrative conversations per client, one of each kind:
+ *   1. a message with attached images (vision)
+ *   2. an AI auto-escalation to a human (ESCALATED + handoff + audit note)
+ *   3. a conversation the AI fully resolves on its own
+ */
+function exampleConversationsFor(client, i) {
+  return [
+    {
+      client,
+      channel: "WEB",
+      status: "OPEN",
+      category: "TECHNICAL",
+      priority: "MEDIUM",
+      unread: true,
+      title: "Photos de mon écran fissuré",
+      startedAgo: 3 * HOUR + i * 7 * MIN,
+      msgs: [
+        {
+          role: "USER",
+          content:
+            "Bonjour, voici deux photos de l'écran de mon appareil qui s'est fissuré. Est-ce pris en charge par la garantie ?",
+          images: [shot(client, 1), shot(client, 2)],
+        },
+        {
+          role: "ASSISTANT",
+          content:
+            "Merci pour les photos. La fissure part d'un angle, sans point d'impact visible : ce type de défaut relève généralement de la garantie. J'ouvre une demande de réparation et vous recevrez les instructions de retour par e-mail.",
+          gap: 2,
+          confidence: 0.9,
+        },
+        { role: "USER", content: "Super, merci !", gap: 6 },
+      ],
+    },
+    {
+      client,
+      channel: "WEB",
+      status: "ESCALATED",
+      category: "BILLING",
+      takenOver: true,
+      priority: "HIGH",
+      title: "Litige sur un montant facturé",
+      startedAgo: 6 * HOUR + i * 5 * MIN,
+      msgs: [
+        {
+          role: "USER",
+          content:
+            "On m'a facturé un montant que je n'ai jamais validé, c'est inadmissible. Je veux parler à un vrai conseiller.",
+        },
+        {
+          role: "ASSISTANT",
+          content:
+            "Je comprends votre mécontentement et je suis sincèrement désolé pour la situation. Ce litige dépasse ce que je peux traiter seul : je transmets immédiatement votre dossier à un conseiller Evollis, qui reviendra vers vous au plus vite.",
+          gap: 1,
+        },
+        {
+          role: "SYSTEM",
+          content: "Transféré à un conseiller (escalade automatique de l'IA).",
+          gap: 1,
+        },
+      ],
+    },
+    {
+      client,
+      channel: "WEB",
+      status: "RESOLVED",
+      category: "GENERAL",
+      priority: "NONE",
+      title: "Délai de livraison de mon appareil",
+      startedAgo: 2 * DAY + i * 11 * MIN,
+      msgs: [
+        {
+          role: "USER",
+          content:
+            "Bonjour, sous combien de temps vais-je recevoir mon appareil après ma souscription ?",
+        },
+        {
+          role: "ASSISTANT",
+          content:
+            "Bonjour ! Après validation du dossier (sous 24 h), l'expédition part en 2 à 3 jours ouvrés avec un numéro de suivi. Vous recevrez un SMS dès l'envoi : vous devriez donc le recevoir d'ici la fin de semaine.",
+          gap: 1,
+          confidence: 0.88,
+        },
+        {
+          role: "USER",
+          content: "Parfait, c'est très clair. Merci beaucoup !",
+          gap: 4,
+        },
+        {
+          role: "ASSISTANT",
+          content:
+            "Avec plaisir ! Bonne journée et à très bientôt chez Evollis.",
+          gap: 1,
+        },
+      ],
+    },
+  ];
+}
 
 /**
  * Create one conversation and its messages, with timestamps that increase
@@ -48,11 +149,14 @@ async function seedConversation({
       isPrivate: m.isPrivate ?? false,
       category: isUser ? (m.category ?? category) : null,
       categoryConfidence: isUser ? (m.confidence ?? rand(72, 98) / 100) : null,
-      modelName: isAssistant ? "gemini-2.5-flash" : null,
+      modelName: isAssistant ? "gpt-5.4-mini-2026-03-17" : null,
       tokensIn: isAssistant ? rand(150, 600) : null,
       tokensOut: isAssistant ? rand(80, 400) : null,
       latencyMs: isAssistant ? rand(600, 2200) : null,
       authorAgentId: isOperator ? (m.agent?.id ?? assignee?.id ?? null) : null,
+      // Attached images live on metadata.images (data URLs in the app; demo
+      // uses hosted placeholders here).
+      metadata: m.images?.length ? { images: m.images } : undefined,
       createdAt: new Date(t),
     };
   });
@@ -240,6 +344,14 @@ async function main() {
 
   for (const c of conversations) {
     await seedConversation(c);
+  }
+
+  // Per-client examples: images, auto-escalation, and a fully AI-resolved thread.
+  const exampleClients = [camille, thomas, aicha, lucas, sofia];
+  for (let i = 0; i < exampleClients.length; i++) {
+    for (const c of exampleConversationsFor(exampleClients[i], i)) {
+      await seedConversation(c);
+    }
   }
 
   const [agents, labels, clients, convos, msgs] = await Promise.all([
