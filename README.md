@@ -48,6 +48,20 @@ step-by-step "How to use", configuration, and the data model.
    it generates); the customer can mark it resolved or hand the thread over to a
    human agent.
 
+### Schéma (vue simple)
+
+🖉 **Schéma interactif (Excalidraw)** : <https://excalidraw.com/#json=P78cZv10LUik_J4RFE3fs,pIr4TTEKdZSduoClKi9qvw>
+
+En clair, à chaque message du client :
+
+```mermaid
+flowchart TD
+    A[Message du client] --> B["1 · L'IA détecte le sujet<br/>(Facturation / Technique / Autre)"]
+    B --> C["2 · L'IA rédige une réponse<br/>adaptée au sujet"]
+    C --> D[Réponse envoyée au client]
+    C -. si besoin .-> E["Trop complexe ?<br/>Un conseiller humain prend le relais"]
+```
+
 ### Classification providers — `CLASSIFIER_PROVIDER`
 
 Two classifiers are implemented; the active one is chosen by an env variable:
