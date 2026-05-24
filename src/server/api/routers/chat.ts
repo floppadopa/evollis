@@ -8,7 +8,7 @@ import {
   clientProcedure,
 } from "~/server/api/trpc";
 import { classifyConversation } from "~/server/ai/classify";
-import { generateReply } from "~/server/ai/respond";
+import { generateReply, type GeneratedReply } from "~/server/ai/respond";
 import { imagesFromMetadata, type ThreadMessage } from "~/server/ai/history";
 
 /**
@@ -248,7 +248,33 @@ export const chatRouter = createTRPCRouter({
       }
 
       // ── 4. Generate + persist the assistant reply ───────────────────────────
-      const reply = await generateReply(category, thread);
+      let reply: GeneratedReply;
+      try {
+        reply = await generateReply(category, thread);
+      } catch (err) {
+        // Never leave the customer without a response — log it and reply with a
+        // graceful fallback so the failure is visible (and recoverable via Retry).
+        console.error("[chat.sendMessage] reply generation failed:", err);
+        const fallback = await ctx.db.message.create({
+          data: {
+            conversationId,
+            role: MessageRole.ASSISTANT,
+            content:
+              "Désolé, je rencontre un problème technique et ne peux pas répondre dans l'immédiat. Réessayez dans un instant ; si cela persiste, un conseiller Evollis prendra le relais.",
+            channel: "WEB",
+          },
+        });
+        await ctx.db.conversation.update({
+          where: { id: conversationId },
+          data: { lastMessageAt: new Date() },
+        });
+        return {
+          conversationId,
+          category,
+          assistantMessage: fallback,
+          escalated: false,
+        };
+      }
       const replyAt = new Date();
 
       const assistantMessage = await ctx.db.message.create({
@@ -337,10 +363,19 @@ export const chatRouter = createTRPCRouter({
         images: imagesFromMetadata(m.metadata),
       }));
 
-      const reply = await generateReply(
-        conv.category ?? IntentCategory.GENERAL,
-        thread,
-      );
+      let reply: GeneratedReply;
+      try {
+        reply = await generateReply(
+          conv.category ?? IntentCategory.GENERAL,
+          thread,
+        );
+      } catch (err) {
+        console.error("[chat.regenerateReply] reply generation failed:", err);
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "La génération de la réponse a échoué. Réessayez.",
+        });
+      }
 
       const assistantMessage = await ctx.db.message.create({
         data: {
