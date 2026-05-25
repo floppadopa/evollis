@@ -69,10 +69,6 @@ export default function LoginModal() {
             pré-remplis — cliquez sur « Se connecter », ou choisissez un profil
             ci-dessous.
           </p>
-          <p className="login-modal__note-text">
-            <strong>Stack :</strong> Next.js · tRPC · Prisma / PostgreSQL ·
-            OpenAI (catégorisation BERTopic en option).
-          </p>
         </div>
 
         {/* Credential form (cosmetic pre-fill, locked in demo mode) */}
