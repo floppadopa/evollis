@@ -169,6 +169,11 @@ function ChatView() {
     !isNew && isLoading && !optimistic && messages.length === 0;
   const notFound = !isNew && !isLoading && !conversation;
 
+  // First message of a brand-new chat: render it instantly from the URL while
+  // the auto-send effect spins up, so it never blinks in late after navigation.
+  const pendingNew =
+    isNew && !optimistic ? (searchParams.get("m")?.trim() ?? "") : "";
+
   return (
     <div className="flex h-full flex-col">
       <ChatHeader title={title} />
@@ -248,10 +253,16 @@ function ChatView() {
                   avatarSrc={clientAvatar}
                   authorName={clientName}
                 />
+              ) : pendingNew ? (
+                <UserMessage
+                  content={pendingNew}
+                  avatarSrc={clientAvatar}
+                  authorName={clientName}
+                />
               ) : null}
 
               {/* "Evollis IA est en train d'écrire…" while the reply generates. */}
-              {generating ? <TypingIndicator /> : null}
+              {generating || pendingNew ? <TypingIndicator /> : null}
             </>
           )}
           {/* Scroll anchor — kept at the very bottom of the thread. */}
