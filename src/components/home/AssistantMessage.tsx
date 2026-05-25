@@ -6,6 +6,7 @@ import { useCallback, useRef, useState } from "react";
 
 import MessageActionButton from "~/components/home/MessageActionButton";
 import Avatar from "~/components/inbox/ui/Avatar";
+import { renderInlineMarkdown } from "~/components/inline-markdown";
 
 type AssistantMessageProps = {
   content: string;
@@ -96,7 +97,9 @@ export default function AssistantMessage({
           <span className="assistant-message-label">{displayLabel}</span>
         ) : null}
         <div className="assistant-message-body">
-          <p className="assistant-message-text">{content}</p>
+          <p className="assistant-message-text">
+            {renderInlineMarkdown(content)}
+          </p>
         </div>
         <div className="assistant-message-actions" role="group" aria-label="Message actions">
           <MessageActionButton

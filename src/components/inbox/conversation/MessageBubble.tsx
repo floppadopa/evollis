@@ -5,6 +5,7 @@ import "./_css/MessageBubble.css";
 import type { IntentCategory, MessageRole } from "@prisma/client";
 
 import Avatar from "~/components/inbox/ui/Avatar";
+import { renderInlineMarkdown } from "~/components/inline-markdown";
 
 type Message = {
   id: string;
@@ -39,7 +40,7 @@ export default function MessageBubble({
   if (message.role === "SYSTEM") {
     return (
       <div className="msg-system" role="note">
-        {message.content}
+        {renderInlineMarkdown(message.content)}
       </div>
     );
   }
@@ -58,7 +59,7 @@ export default function MessageBubble({
             {message.authorAgent?.name ?? "Agent"}
           </span>
         </div>
-        <div className="msg-note__content">{message.content}</div>
+        <div className="msg-note__content">{renderInlineMarkdown(message.content)}</div>
         <time className="msg-note__time">{time}</time>
       </div>
     );
@@ -81,7 +82,7 @@ export default function MessageBubble({
             <span className="msg-bubble__author">{agentName}</span>
             <span className="msg-bubble__time">{time}</span>
           </div>
-          <div className="msg-bubble__content">{message.content}</div>
+          <div className="msg-bubble__content">{renderInlineMarkdown(message.content)}</div>
         </div>
       </div>
     );
@@ -99,7 +100,7 @@ export default function MessageBubble({
             <span className="msg-bubble__author">Evollis IA</span>
             <span className="msg-bubble__time">{time}</span>
           </div>
-          <div className="msg-bubble__content">{message.content}</div>
+          <div className="msg-bubble__content">{renderInlineMarkdown(message.content)}</div>
         </div>
       </div>
     );
@@ -131,7 +132,7 @@ export default function MessageBubble({
           </div>
         )}
         {message.content ? (
-          <div className="msg-bubble__content">{message.content}</div>
+          <div className="msg-bubble__content">{renderInlineMarkdown(message.content)}</div>
         ) : null}
       </div>
     </div>
