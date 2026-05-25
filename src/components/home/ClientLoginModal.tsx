@@ -27,8 +27,13 @@ export default function ClientLoginModal() {
     (p) => p.name !== "Lucas Petit",
   );
 
-  const firstProfile = visibleProfiles[0];
-  const defaultEmail = firstProfile?.email ?? "camille.laurent@example.fr";
+  // The canonical demo profile shown pre-filled in the form. Profiles are
+  // ordered by name, so visibleProfiles[0] would be Aïcha — pick Camille
+  // explicitly so the pre-filled email and the "Se connecter" target match.
+  const DEFAULT_EMAIL = "camille.laurent@example.fr";
+  const defaultProfile =
+    visibleProfiles.find((p) => p.email === DEFAULT_EMAIL) ?? visibleProfiles[0];
+  const defaultEmail = defaultProfile?.email ?? DEFAULT_EMAIL;
 
   function handleLogin(clientId: string) {
     startTransition(async () => {
@@ -41,8 +46,8 @@ export default function ClientLoginModal() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!firstProfile) return;
-    handleLogin(firstProfile.id);
+    if (!defaultProfile) return;
+    handleLogin(defaultProfile.id);
   }
 
   return (
@@ -86,7 +91,8 @@ export default function ClientLoginModal() {
               id="client-email"
               type="email"
               className="client-login__input"
-              defaultValue={defaultEmail}
+              value={defaultEmail}
+              readOnly
               autoComplete="email"
               disabled
             />
@@ -113,7 +119,7 @@ export default function ClientLoginModal() {
           <button
             type="submit"
             className="client-login__submit"
-            disabled={pending || !firstProfile}
+            disabled={pending || !defaultProfile}
           >
             {pending ? "Connexion…" : "Se connecter"}
           </button>
