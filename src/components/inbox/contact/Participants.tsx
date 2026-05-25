@@ -66,10 +66,6 @@ export default function Participants({ conversationId }: ParticipantsProps) {
 
   return (
     <section className="participants">
-      <div className="participants__header">
-        <h3 className="participants__heading">Participants</h3>
-      </div>
-
       {participants.length > 0 ? (
         <ul className="participants__list" role="list">
           {participants.map((agent) => (

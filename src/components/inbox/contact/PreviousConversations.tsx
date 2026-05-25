@@ -48,10 +48,6 @@ export default function PreviousConversations({ conversationId }: PreviousConver
 
   return (
     <section className="prev-convos">
-      <div className="prev-convos__header">
-        <h3 className="prev-convos__heading">Conversations précédentes</h3>
-      </div>
-
       {isLoading ? (
         <LoadingPlaceholder />
       ) : prevConvos && prevConvos.length > 0 ? (

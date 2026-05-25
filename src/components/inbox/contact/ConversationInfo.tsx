@@ -76,7 +76,6 @@ function CheckIcon() {
 function ConversationInfoSkeleton() {
   return (
     <div className="conv-info conv-info--skeleton" aria-busy="true">
-      <h2 className="conv-info__heading">Conversation</h2>
       <div className="conv-info__fields">
         {[70, 100, 130, 120, 160].map((w, i) => (
           <div key={i} className="conv-info__skeleton-field">
@@ -122,8 +121,6 @@ export default function ConversationInfo({ conversationId }: ConversationInfoPro
 
   return (
     <div className="conv-info">
-      <h2 className="conv-info__heading">Conversation</h2>
-
       <div className="conv-info__fields">
         {/* Statut */}
         <div className="conv-info__field">

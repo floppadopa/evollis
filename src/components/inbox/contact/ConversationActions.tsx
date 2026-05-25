@@ -6,7 +6,6 @@ import { type Priority } from "@prisma/client";
 import { api } from "~/trpc/react";
 import Avatar from "~/components/inbox/ui/Avatar";
 import LabelChip from "~/components/inbox/ui/LabelChip";
-import PriorityBadge from "~/components/inbox/ui/PriorityBadge";
 
 // ── Priority meta ──────────────────────────────────────────────────────────
 
@@ -145,13 +144,6 @@ export default function ConversationActions({ conversationId }: Props) {
             ))}
           </select>
         </div>
-
-        {/* Badge below the select for visual reinforcement */}
-        {conv.priority !== "NONE" && (
-          <span style={{ marginTop: "0.25rem" }}>
-            <PriorityBadge priority={conv.priority} />
-          </span>
-        )}
       </div>
 
       {/* ── 3. Libellés ────────────────────────────────────────────────── */}
